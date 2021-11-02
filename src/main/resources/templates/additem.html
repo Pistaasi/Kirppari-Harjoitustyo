@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lisäys</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<h1>Lisää kirpparikamoja!</h1>
+	<div>
+		<form th:object="${item}" th:action="@{save}" action="#" method="post">
+		
+		  	<label for="name">Tuote</label>
+			<input type="text" id="name" th:field="*{name}" />
+			<div style="clear: both; display: block; height: 10px;"></div>
+			
+		  	<label for="location">Kaupunki</label>
+			<input type="text" id="location" th:field="*{location}" />
+			<div style="clear: both; display: block; height: 10px;"></div>
+			
+		  	<label for="seller">Myyjä</label>
+			<input type="text" id="seller" th:field="*{seller}" />
+			<div style="clear: both; display: block; height: 10px;"></div>
+			
+			<label for="description">Kuvaus</label>
+			<input type="text" id="description" th:field="*{description}" />
+			<div style="clear: both; display: block; height: 10px;"></div>
+			
+			<label for="email">Email</label>
+			<input type="text" id="email" th:field="*{email}" />
+			<div style="clear: both; display: block; height: 10px;"></div>
+			
+			<label for="price">Hinta</label>
+			<input type="text" id="price" th:field="*{price}" />
+			<div style="clear: both; display: block; height: 10px;"></div>
+			
+			<div style="clear: both; display: block; height: 10px;"></div>						
+		  	<label for="catlist">Category</label>
+			 <select id="catlist" th:field="*{category}" class="form-control">
+       		<option th:each="category: ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+    		</select>
+			
+			<input type="submit" value="Save"></input>
+		</form>
+	</div>
+</body>
+</html>

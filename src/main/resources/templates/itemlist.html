@@ -8,15 +8,17 @@
 <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
 <body>
 
-<h1>Tuotenäkymä</h1>
+<h1>Kirppari-ilmoitukset:</h1>
 
 <div class="col-md-4">
 		<h3 th:inline="text">Tervetuloa [[${#httpServletRequest.remoteUser}]]!</h3>
 	</div>
 	<div class="col-md-4" style="padding:20px 0">
 		<form th:action="@{/logout}" method="post">
-			<input type="submit" value="Sign Out" class="btn btn-sm btn-danger"/>
+			<input type="submit" value="Kirjaudu ulos"  sec:authorize="hasAnyAuthority('ADMIN', 'USER')" class="btn btn-sm btn-danger"/>
 		</form>
+		<td><a th:href="@{/login}" sec:authorize="!hasAnyAuthority('ADMIN', 'USER')" class="btn btn-success">Kirjaudu sisään</a></td>
+		
 	</div>
 
 <table class="table table-striped">
@@ -27,23 +29,30 @@
 <th>Kuvaus</th>
 <th>Email</th>
 <th>Hinta</th>
+<th>Kategoria</th>
+<th>Tykkäykset</th>
 <th sec:authorize="hasAuthority('ADMIN')"> </th>
 
 </tr>
 <tr th:each = "item : ${items}">
-<td th:text="${item.item}"></td>
+<td th:text="${item.name}"></td>
 <td th:text="${item.location}"></td>
 <td th:text="${item.seller}"></td>
 <td th:text="${item.description}"></td>
+<td th:text="${item.email}"></td>
 <td th:text="${item.price}"></td>
+<td th:text="${item.category}"></td>
 
-<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/delete/{id}(id=${item.id})}" class="btn btn-danger">Delete</a></td>
+<td><a th:href="@{/edit/{id}(id=${item.id})}" sec:authorize="hasAnyAuthority('ADMIN', 'USER')" class="btn btn-success">Tykkää</a></td>
 
-<td><a th:href="@{/edit/{id}(id=${item.id})}" class="btn btn-success">Edit</a></td>
+
+<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/delete/{id}(id=${item.id})}" class="btn btn-danger">Poista</a></td>
+
+<td><a th:href="@{/edit/{id}(id=${item.id})}" sec:authorize="hasAnyAuthority('ADMIN', 'USER')" class="btn btn-success">Muuta</a></td>
 </tr>
 
 </table>
-<a href="/add" class="btn btn-success">Add Book</a>  
+<a href="/add" class="btn btn-success">Lisää tuote</a>  
 
 </body>
 </html>

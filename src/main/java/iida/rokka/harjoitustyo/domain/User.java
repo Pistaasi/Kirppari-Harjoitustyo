@@ -1,18 +1,27 @@
 package iida.rokka.harjoitustyo.domain;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class User {
 
+	@ManyToMany
+	@JoinTable(name = "likes", joinColumns = @JoinColumn(name = "Userid"), inverseJoinColumns = @JoinColumn(name = "Itemid"))
+	Set<Item> itemsLiked;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false, updatable = false)
-	private Long id;
+	@Column(name = "Userid", nullable = false, updatable = false)
+	private Long Userid;
 
 	// Username with unique constraint
 	@Column(name = "username", nullable = false, unique = true)
@@ -39,11 +48,11 @@ public class User {
 	}
 
 	public Long getId() {
-		return id;
+		return Userid;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.Userid = id;
 	}
 
 	public String getUsername() {

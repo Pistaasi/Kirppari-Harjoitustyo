@@ -1,10 +1,13 @@
 package iida.rokka.harjoitustyo.domain;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -13,9 +16,12 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class Item {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	private String item, seller, location, description, email;
+	private Long Itemid;
+	private String name, seller, location, description, email;
 	private Double price;
+
+	@ManyToMany(mappedBy = "itemsLiked")
+	Set<User> likes;
 
 	@ManyToOne
 	@JoinColumn(name = "categoryid")
@@ -24,10 +30,11 @@ public class Item {
 
 	// KONSTRUKTORIT
 
-	public Item(String item, String seller, String location, String description, String email, Double price,
+	// Kategorian kanssa
+	public Item(String name, String seller, String location, String description, String email, Double price,
 			Category category) {
 		super();
-		this.item = item;
+		this.name = name;
 		this.seller = seller;
 		this.location = location;
 		this.description = description;
@@ -36,9 +43,10 @@ public class Item {
 		this.category = category;
 	}
 
-	public Item(String item, String seller, String location, String description, String email, Double price) {
+	// Ilman kategoriaa
+	public Item(String name, String seller, String location, String description, String email, Double price) {
 		super();
-		this.item = item;
+		this.name = name;
 		this.seller = seller;
 		this.location = location;
 		this.description = description;
@@ -46,6 +54,7 @@ public class Item {
 		this.price = price;
 	}
 
+	// Tyhjä
 	public Item() {
 
 	}
@@ -53,11 +62,11 @@ public class Item {
 	// GET SET
 
 	public Long getId() {
-		return id;
+		return Itemid;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.Itemid = id;
 	}
 
 	public String getSeller() {
@@ -100,12 +109,12 @@ public class Item {
 		this.price = price;
 	}
 
-	public String getItem() {
-		return item;
+	public String getName() {
+		return name;
 	}
 
-	public void setItem(String item) {
-		this.item = item;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Category getCategory() {
@@ -120,8 +129,9 @@ public class Item {
 
 	@Override
 	public String toString() {
-		return "Item [id=" + id + ", item=" + item + ", seller=" + seller + ", location=" + location + ", description="
-				+ description + ", email=" + email + ", price=" + price + ", category=" + category + "]";
+		return "Item [id=" + Itemid + ", name=" + name + ", seller=" + seller + ", location=" + location
+				+ ", description=" + description + ", email=" + email + ", price=" + price + ", category=" + category
+				+ "]";
 	}
 
 }

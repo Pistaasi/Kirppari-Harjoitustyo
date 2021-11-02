@@ -16,7 +16,7 @@ public class Category {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private Long Catid;
 	private String name;
 
 	@JsonIgnore
@@ -36,7 +36,7 @@ public class Category {
 	// GET SET
 
 	public Long getId() {
-		return id;
+		return Catid;
 	}
 
 	public List<Item> getItems() {
@@ -48,7 +48,7 @@ public class Category {
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.Catid = id;
 	}
 
 	public String getName() {

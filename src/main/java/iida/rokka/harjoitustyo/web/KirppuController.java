@@ -28,6 +28,7 @@ public class KirppuController {
 	@GetMapping("/itemlist")
 	public String ItemList(Model model) {
 		model.addAttribute("items", repository.findAll());
+		model.addAttribute("likes", repository.findAll());
 		return "itemlist";
 	}
 
