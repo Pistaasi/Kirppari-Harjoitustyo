@@ -43,7 +43,7 @@ public class Category {
 		return items;
 	}
 
-	public void setBooks(List<Item> items) {
+	public void setItems(List<Item> items) {
 		this.items = items;
 	}
 

@@ -1,5 +1,7 @@
 package iida.rokka.harjoitustyo;
 
+import java.time.LocalDate;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -36,16 +38,18 @@ public class HarjoitustyoApplication {
 			catrepository.save(new Category("Elektroniikka ja kodinkoneet"));
 			catrepository.save(new Category("Muu"));
 
+			LocalDate date1 = LocalDate.now();
+
 			log.info("save some items");
 			repository.save(new Item("Maastopyörä", "Matti Meikäläinen", "Helsinki",
 					"Uudehko miltei käyttämättömäksi jäänyt maastopyörä, punainen, renkaat vaihdettu 2kk sitten.",
-					"matti.meikalainen@gmail.com", 150.00));
+					"matti.meikalainen@gmail.com", 150.00, date1));
 			repository.save(new Item("Sohva", "Liisa Puro", "Lohja",
 					"Nahkainen sohva, musta, käyttöä ollut jonkin verran (2v), muuten hyvässä kunnossa.",
-					"liisa.puro@gmail.com", 90.00));
+					"liisa.puro@gmail.com", 90.00, date1));
 			repository.save(new Item("Erilaisia nukkeja", "Salla Isojärvi", "Tampere",
 					"Laatikollinen käytettyjä lasten vanhoja nukkeja. Esim. Barbie, Monster High ja Littlest Petshop, joiltakin puuttuu raajoja, hiuksia, vaatteita jne.",
-					"salla.isojarvi@hotmail.fi", 20.00));
+					"salla.isojarvi@hotmail.fi", 20.00, date1));
 
 			// Create users: admin/admin user/user
 			User user1 = new User("admin", "$2a$10$0MMwY.IQqpsVc1jC8u7IJ.2rT8b0Cd3b3sfIBGV2zfgnPGtT4r0.C", "ADMIN",

@@ -1,5 +1,6 @@
 package iida.rokka.harjoitustyo.web;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,12 @@ public class KirppuController {
 
 	@Autowired
 	private CategoryRepository catrepository;
+
+	// aloitussivu
+	@GetMapping("/")
+	public String aloitus() {
+		return "redirect:itemlist";
+	}
 
 	// Kirppis tuotteiden listaus
 	@GetMapping("/itemlist")
@@ -61,6 +68,7 @@ public class KirppuController {
 	// Tallentaa kirppistuotteen
 	@PostMapping("/save")
 	public String save(Item item) {
+		item.setDate(LocalDate.now());
 		repository.save(item);
 		return "redirect:itemlist";
 	}

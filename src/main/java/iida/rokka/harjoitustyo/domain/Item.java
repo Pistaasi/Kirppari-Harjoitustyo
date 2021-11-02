@@ -1,5 +1,6 @@
 package iida.rokka.harjoitustyo.domain;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -19,6 +20,7 @@ public class Item {
 	private Long Itemid;
 	private String name, seller, location, description, email;
 	private Double price;
+	private LocalDate date;
 
 	@ManyToMany(mappedBy = "itemsLiked")
 	Set<User> likes;
@@ -32,7 +34,7 @@ public class Item {
 
 	// Kategorian kanssa
 	public Item(String name, String seller, String location, String description, String email, Double price,
-			Category category) {
+			LocalDate date, Category category) {
 		super();
 		this.name = name;
 		this.seller = seller;
@@ -40,11 +42,13 @@ public class Item {
 		this.description = description;
 		this.email = email;
 		this.price = price;
+		this.date = date;
 		this.category = category;
 	}
 
 	// Ilman kategoriaa
-	public Item(String name, String seller, String location, String description, String email, Double price) {
+	public Item(String name, String seller, String location, String description, String email, Double price,
+			LocalDate date) {
 		super();
 		this.name = name;
 		this.seller = seller;
@@ -52,6 +56,7 @@ public class Item {
 		this.description = description;
 		this.email = email;
 		this.price = price;
+		this.date = date;
 	}
 
 	// Tyhjä
@@ -63,6 +68,14 @@ public class Item {
 
 	public Long getId() {
 		return Itemid;
+	}
+
+	public LocalDate getDate() {
+		return date;
+	}
+
+	public void setDate(LocalDate date) {
+		this.date = date;
 	}
 
 	public void setId(Long id) {
