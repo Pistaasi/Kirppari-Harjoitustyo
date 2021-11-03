@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-public class Item {
+public class Item implements Comparable<Item> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long Itemid;
@@ -145,6 +145,13 @@ public class Item {
 		return "Item [id=" + Itemid + ", name=" + name + ", seller=" + seller + ", location=" + location
 				+ ", description=" + description + ", email=" + email + ", price=" + price + ", category=" + category
 				+ "]";
+	}
+
+	// Comparable
+
+	@Override
+	public int compareTo(Item e) {
+		return this.getName().compareTo(e.getName());
 	}
 
 }

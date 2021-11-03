@@ -17,11 +17,16 @@
 		<form th:action="@{/logout}" method="post">
 			<input type="submit" value="Kirjaudu ulos"  sec:authorize="hasAnyAuthority('ADMIN', 'USER')" class="btn btn-sm btn-danger"/>
 		</form>
-		<td><a th:href="@{/login}" sec:authorize="!hasAnyAuthority('ADMIN', 'USER')" class="btn btn-success">Kirjaudu sisään</a></td>
-		
+		<td><a th:href="@{/login}" sec:authorize="!hasAnyAuthority('ADMIN', 'USER')" class="btn btn-primary">Kirjaudu sisään</a></td>
+		<td><a th:href="@{/register}" sec:authorize="!hasAnyAuthority('ADMIN', 'USER')" class="btn btn-success">Luo tili</a></td>
 	</div>
-
+	<h2>Järjestä ilmoitukset: </h2>
+	<td><a th:href="@{/itemlist/alpha}" class="btn btn-success">aakkoset</a></td>
+	<td><a th:href="@{/itemlist/price}" class="btn btn-success">hinta</a></td>
+	<td><a th:href="@{/itemlist/price}" class="btn btn-success">päivämäärä</a></td>
+	
 <table class="table table-striped">
+<thead class="thead-dark">
 <tr>
 <th>Tuote</th>
 <th>Kaupunki</th>
@@ -33,8 +38,14 @@
 <th>Päivämäärä</th>
 <th>Tykkäykset</th>
 <th sec:authorize="hasAuthority('ADMIN')"> </th>
-
 </tr>
+<thead/>
+ <!--   
+<div th:switch="${sort.method}"> 
+  <p th:case="'aakkoset'">sort by alphabetical order (a - ö)</p>
+  <p th:case="*">default, "item : ${items}"</p> 
+</div> -->
+<tbody>
 <tr th:each = "item : ${items}">
 <td th:text="${item.name}"></td>
 <td th:text="${item.location}"></td>
@@ -45,16 +56,17 @@
 <td th:text="${item.category}"></td>
 <td th:text="${item.date}"></td>
 
-<td><a th:href="@{/edit/{id}(id=${item.id})}" sec:authorize="hasAnyAuthority('ADMIN', 'USER')" class="btn btn-success">Tykkää</a></td>
+
+<td><a th:href="@{/edit/{id}(id=${item.id})}" sec:authorize="hasAnyAuthority('ADMIN', 'USER')" class="btn btn-primary">Tykkää</a></td>
 
 
 <td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/delete/{id}(id=${item.id})}" class="btn btn-danger">Poista</a></td>
 
 <td><a th:href="@{/edit/{id}(id=${item.id})}" sec:authorize="hasAnyAuthority('ADMIN', 'USER')" class="btn btn-success">Muuta</a></td>
 </tr>
-
+<tbody/>
 </table>
-<a href="/add" class="btn btn-success">Lisää tuote</a>  
+<a href="/add" sec:authorize="hasAnyAuthority('ADMIN', 'USER')" class="btn btn-primary">Lisää tuote</a>  
 
 </body>
 </html>

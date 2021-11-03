@@ -1,6 +1,8 @@
 package iida.rokka.harjoitustyo.web;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,10 +14,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 
 import iida.rokka.harjoitustyo.domain.CategoryRepository;
 import iida.rokka.harjoitustyo.domain.Item;
 import iida.rokka.harjoitustyo.domain.ItemRepository;
+import iida.rokka.harjoitustyo.domain.User;
 
 @Controller
 public class KirppuController {
@@ -25,17 +29,55 @@ public class KirppuController {
 	@Autowired
 	private CategoryRepository catrepository;
 
-	// aloitussivu
+	// aloitussivu, vie itemlist sivulle
 	@GetMapping("/")
 	public String aloitus() {
 		return "redirect:itemlist";
 	}
 
-	// Kirppis tuotteiden listaus
+	// Lista ja ja sen järjestäminen
+	public List<Item> Sorting(String method) {
+
+		List<Item> Sorting = repository.findAll();
+
+		Comparator<Item> compareByDate = new Comparator<Item>() {
+			@Override
+			public int compare(Item i1, Item i2) {
+				return i1.getDate().compareTo(i2.getDate());
+			}
+		};
+
+		Comparator<Item> compareByPrice = new Comparator<Item>() {
+			@Override
+			public int compare(Item i1, Item i2) {
+				return i1.getPrice().compareTo(i2.getPrice());
+			}
+		};
+
+		if (method.equals("alpha")) {
+			Collections.sort(Sorting);
+		} else if (method.equals("date")) {
+			Collections.sort(Sorting, compareByDate);
+		} else if (method.equals("price")) {
+			Collections.sort(Sorting, compareByPrice);
+		} else if (method.equals("default")) {
+			// ei tee mitään
+		}
+		return Sorting;
+	}
+
 	@GetMapping("/itemlist")
 	public String ItemList(Model model) {
-		model.addAttribute("items", repository.findAll());
-		model.addAttribute("likes", repository.findAll());
+		model.addAttribute("items", Sorting("default"));
+		return "itemlist";
+	}
+
+	// Itemlist sivu, jossa Kirppistuotteiden listaus, tykkäys, lisääminen,
+	// poistaminen ja
+	// editointi
+	@GetMapping("/itemlist/{sort}")
+	public String ItemListSort(@PathVariable("sort") String sort, Model model) {
+		model.addAttribute("items", Sorting(sort));
 		return "itemlist";
 	}
 
@@ -43,6 +85,14 @@ public class KirppuController {
 	@RequestMapping(value = "/login")
 	public String login() {
 		return "login";
+	}
+
+	// Registration / tilin luonti
+	@GetMapping("/register")
+	public String showRegistrationForm(WebRequest request, Model model) {
+		User userDto = new User();
+		model.addAttribute("user", userDto);
+		return "registration";
 	}
 
 	// Listaa tuotteet REST
