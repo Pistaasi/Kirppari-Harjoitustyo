@@ -40,11 +40,7 @@
 <th sec:authorize="hasAuthority('ADMIN')"> </th>
 </tr>
 <thead/>
- <!--   
-<div th:switch="${sort.method}"> 
-  <p th:case="'aakkoset'">sort by alphabetical order (a - ö)</p>
-  <p th:case="*">default, "item : ${items}"</p> 
-</div> -->
+
 <tbody>
 <tr th:each = "item : ${items}">
 <td th:text="${item.name}"></td>
@@ -65,8 +61,11 @@
 <td th:case="'admin'" sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/delete/{id}(id=${item.id})}" class="btn btn-danger">PoistaAdmin</a></td>
 </div>
 
+<div th:switch="${currUser}"> 
+<td th:case="${item.user}"><a th:href="@{/edit/{id}(id=${item.id})}" sec:authorize="hasAnyAuthority('ADMIN', 'USER')" class="btn btn-success">Muuta</a></td>
+<td th:case="'admin'"><a th:href="@{/edit/{id}(id=${item.id})}" sec:authorize="hasAuthority('ADMIN')" class="btn btn-success">MuutaAdmin</a></td>
+</div>
 
-<td><a th:href="@{/edit/{id}(id=${item.id})}" sec:authorize="hasAnyAuthority('ADMIN', 'USER')" class="btn btn-success">Muuta</a></td>
 </tr>
 <tbody/>
 </table>
