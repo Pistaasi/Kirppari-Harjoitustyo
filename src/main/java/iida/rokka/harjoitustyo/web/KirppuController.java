@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +37,7 @@ public class KirppuController {
 		return "redirect:itemlist";
 	}
 
-	// Lista ja ja sen järjestäminen
+	// Lista ja sen järjestäminen
 	public List<Item> Sorting(String method) {
 
 		List<Item> Sorting = repository.findAll();
@@ -66,9 +68,25 @@ public class KirppuController {
 		return Sorting;
 	}
 
+	// Itemlist ilman sorttia
 	@GetMapping("/itemlist")
 	public String ItemList(Model model) {
-		model.addAttribute("items", Sorting("default"));
+		model.addAttribute("items", repository.findAll());
+
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		String username = "";
+		if (principal instanceof UserDetails) {
+			username = ((UserDetails) principal).getUsername();
+		} else {
+			username = principal.toString();
+		}
+		boolean canDel = false;
+		if (canDel) {
+
+		}
+
+		model.addAttribute("currUser", username);
 		return "itemlist";
 	}
 
@@ -107,7 +125,15 @@ public class KirppuController {
 		return repository.findById(ItemId);
 	}
 
-	// Lisaa kirppistuote
+	// Tykkäystoiminto KESKEN !!!!!!!!!!!!!!!!!!!!!!!!
+	@PostMapping("/like{username}")
+	public String like(@PathVariable("username") String username, Item item) {
+
+		repository.save(item);
+		return "redirect:itemlist";
+	}
+
+	// Lisää kirppistuote
 	@RequestMapping(value = "/add")
 	public String addItem(Model model) {
 		model.addAttribute("item", new Item());
@@ -119,6 +145,15 @@ public class KirppuController {
 	@PostMapping("/save")
 	public String save(Item item) {
 		item.setDate(LocalDate.now());
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		String username = "";
+		if (principal instanceof UserDetails) {
+			username = ((UserDetails) principal).getUsername();
+		} else {
+			username = principal.toString();
+		}
+		item.setUser(username);
 		repository.save(item);
 		return "redirect:itemlist";
 	}

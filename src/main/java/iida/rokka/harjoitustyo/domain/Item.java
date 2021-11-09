@@ -1,14 +1,12 @@
 package iida.rokka.harjoitustyo.domain;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -21,9 +19,7 @@ public class Item implements Comparable<Item> {
 	private String name, seller, location, description, email;
 	private Double price;
 	private LocalDate date;
-
-	@ManyToMany(mappedBy = "itemsLiked")
-	Set<User> likes;
+	private String user;
 
 	@ManyToOne
 	@JoinColumn(name = "categoryid")
@@ -34,7 +30,7 @@ public class Item implements Comparable<Item> {
 
 	// Kategorian kanssa
 	public Item(String name, String seller, String location, String description, String email, Double price,
-			LocalDate date, Category category) {
+			LocalDate date, Category category, String user) {
 		super();
 		this.name = name;
 		this.seller = seller;
@@ -48,7 +44,7 @@ public class Item implements Comparable<Item> {
 
 	// Ilman kategoriaa
 	public Item(String name, String seller, String location, String description, String email, Double price,
-			LocalDate date) {
+			LocalDate date, String user) {
 		super();
 		this.name = name;
 		this.seller = seller;
@@ -68,6 +64,14 @@ public class Item implements Comparable<Item> {
 
 	public Long getId() {
 		return Itemid;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
 	}
 
 	public LocalDate getDate() {

@@ -36,7 +36,7 @@
 <th>Hinta</th>
 <th>Kategoria</th>
 <th>Päivämäärä</th>
-<th>Tykkäykset</th>
+<th>userTEST</th>
 <th sec:authorize="hasAuthority('ADMIN')"> </th>
 </tr>
 <thead/>
@@ -55,12 +55,16 @@
 <td th:text="${item.price}"></td>
 <td th:text="${item.category}"></td>
 <td th:text="${item.date}"></td>
+<td th:text="${item.user}"></td>
 
 
 <td><a th:href="@{/edit/{id}(id=${item.id})}" sec:authorize="hasAnyAuthority('ADMIN', 'USER')" class="btn btn-primary">Tykkää</a></td>
 
+<div th:switch="${currUser}"> 
+<td th:case="${item.user}" sec:authorize="hasAnyAuthority('ADMIN', 'USER')"><a th:href="@{/delete/{id}(id=${item.id})}" class="btn btn-danger">Poista</a></td>
+<td th:case="'admin'" sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/delete/{id}(id=${item.id})}" class="btn btn-danger">PoistaAdmin</a></td>
+</div>
 
-<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/delete/{id}(id=${item.id})}" class="btn btn-danger">Poista</a></td>
 
 <td><a th:href="@{/edit/{id}(id=${item.id})}" sec:authorize="hasAnyAuthority('ADMIN', 'USER')" class="btn btn-success">Muuta</a></td>
 </tr>
