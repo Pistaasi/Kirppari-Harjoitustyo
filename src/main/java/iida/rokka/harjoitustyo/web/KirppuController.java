@@ -21,15 +21,20 @@ import org.springframework.web.context.request.WebRequest;
 import iida.rokka.harjoitustyo.domain.CategoryRepository;
 import iida.rokka.harjoitustyo.domain.Item;
 import iida.rokka.harjoitustyo.domain.ItemRepository;
+import iida.rokka.harjoitustyo.domain.LikesRepository;
 import iida.rokka.harjoitustyo.domain.User;
 
 @Controller
 public class KirppuController {
+
 	@Autowired
 	private ItemRepository repository;
 
 	@Autowired
 	private CategoryRepository catrepository;
+
+	@Autowired
+	private LikesRepository lrepository;
 
 	// aloitussivu, vie itemlist sivulle
 	@GetMapping("/")
@@ -75,16 +80,14 @@ public class KirppuController {
 
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-		String username = "";
+		String username = "admin";
 		if (principal instanceof UserDetails) {
 			username = ((UserDetails) principal).getUsername();
 		} else {
 			username = principal.toString();
 		}
-		boolean canDel = false;
-		if (canDel) {
 
-		}
+		// List<ItemLikes> like1 = lrepository.findAll();
 
 		model.addAttribute("currUser", username);
 		return "itemlist";
@@ -126,11 +129,19 @@ public class KirppuController {
 	}
 
 	// Tykkäystoiminto KESKEN !!!!!!!!!!!!!!!!!!!!!!!!
-	@PostMapping("/like{username}")
-	public String like(@PathVariable("username") String username, Item item) {
+	@PostMapping("/like{id}")
+	public String like(@PathVariable("id") Long ItemID) {
 
-		repository.save(item);
-		return "redirect:itemlist";
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		String username = "";
+		if (principal instanceof UserDetails) {
+			username = ((UserDetails) principal).getUsername();
+		} else {
+			username = principal.toString();
+		}
+
+		return "redirect:../itemlist";
 	}
 
 	// Lisää kirppistuote

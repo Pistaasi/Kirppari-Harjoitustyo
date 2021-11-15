@@ -18,7 +18,7 @@
 			<input type="submit" value="Kirjaudu ulos"  sec:authorize="hasAnyAuthority('ADMIN', 'USER')" class="btn btn-sm btn-danger"/>
 		</form>
 		<td><a th:href="@{/login}" sec:authorize="!hasAnyAuthority('ADMIN', 'USER')" class="btn btn-primary">Kirjaudu sisään</a></td>
-		<td><a th:href="@{/register}" sec:authorize="!hasAnyAuthority('ADMIN', 'USER')" class="btn btn-success">Luo tili</a></td>
+		<td><a th:href="@{/signup}" sec:authorize="!hasAnyAuthority('ADMIN', 'USER')" class="btn btn-success">Luo tili</a></td>
 	</div>
 	<h2>Järjestä ilmoitukset: </h2>
 	<td><a th:href="@{/itemlist/alpha}" class="btn btn-success">aakkoset</a></td>
@@ -54,7 +54,7 @@
 <td th:text="${item.user}"></td>
 
 
-<td><a th:href="@{/edit/{id}(id=${item.id})}" sec:authorize="hasAnyAuthority('ADMIN', 'USER')" class="btn btn-primary">Tykkää</a></td>
+<td><a th:href="@{/like/{id}(id=${item.id})}" sec:authorize="hasAnyAuthority('ADMIN', 'USER')" class="btn btn-primary">Tykkää</a></td>
 
 <div th:switch="${currUser}"> 
 <td th:case="${item.user}" sec:authorize="hasAnyAuthority('ADMIN', 'USER')"><a th:href="@{/delete/{id}(id=${item.id})}" class="btn btn-danger">Poista</a></td>

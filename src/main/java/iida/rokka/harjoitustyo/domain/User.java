@@ -38,6 +38,13 @@ public class User {
 		this.email = email;
 	}
 
+	public User(String username, String passwordHash, String role) {
+		super();
+		this.username = username;
+		this.passwordHash = passwordHash;
+		this.role = role;
+	}
+
 	public Long getId() {
 		return Userid;
 	}
