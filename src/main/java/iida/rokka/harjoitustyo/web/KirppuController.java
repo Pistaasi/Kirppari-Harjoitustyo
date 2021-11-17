@@ -44,6 +44,7 @@ public class KirppuController {
 
 		List<Item> Sorting = repository.findAll();
 
+		// Custom comparatorit, aakkoset comparator Item luokassa
 		Comparator<Item> compareByDate = new Comparator<Item>() {
 			@Override
 			public int compare(Item i1, Item i2) {
@@ -73,8 +74,8 @@ public class KirppuController {
 	// Itemlist ilman sorttia
 	@GetMapping("/itemlist")
 	public String ItemList(Model model) {
-		model.addAttribute("items", repository.findAll());
 
+		// Usernamen etsiminen
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		String username = "admin";
@@ -84,20 +85,22 @@ public class KirppuController {
 			username = principal.toString();
 		}
 
-		// List<ItemLikes> like1 = lrepository.findAll();
+		// Tykkäystoiminto testiprintti
 		List<Item> item1 = repository.findByName("Sohva");
 		Item Item2 = item1.get(0);
 		System.out.print(Item2.getLikers());
 
+		model.addAttribute("items", repository.findAll());
 		model.addAttribute("currUser", username);
 		return "itemlist";
 	}
 
 	// Itemlist sivu, jossa Kirppistuotteiden listaus, tykkäys, lisääminen,
-	// poistaminen ja editointi
+	// poistaminen ja editointi (Sortin kanssa)
 	@GetMapping("/itemlist/{sort}")
 	public String ItemListSort(@PathVariable("sort") String sort, Model model) {
 
+		// Usernamen haku
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		String username = "admin";
@@ -107,10 +110,7 @@ public class KirppuController {
 			username = principal.toString();
 		}
 
-		// List<ItemLikes> like1 = lrepository.findAll();
-
 		model.addAttribute("currUser", username);
-
 		model.addAttribute("items", Sorting(sort));
 		return "itemlist";
 	}
@@ -136,7 +136,7 @@ public class KirppuController {
 	}
 
 	// Listaa tuotteet id:n mukaan REST
-	@GetMapping(value = "/item/{id}")
+	@GetMapping(value = "/items/{id}")
 	public @ResponseBody Optional<Item> findItemRest(@PathVariable("id") Long ItemId) {
 		return repository.findById(ItemId);
 	}
@@ -145,10 +145,11 @@ public class KirppuController {
 	@GetMapping("/like/{id}")
 	public String like(@PathVariable("id") Long ItemId) {
 
+		// Tykättävän itemin haku id:n perusteella
 		Optional<Item> OptionalItem = repository.findById(ItemId);
 		Item Item = OptionalItem.get();
-		System.out.print(Item);
 
+		// Usernamen haku
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		String username = "";
@@ -158,13 +159,12 @@ public class KirppuController {
 			username = principal.toString();
 		}
 
+		// likers listan haku
 		ArrayList<String> List1 = Item.getLikers();
-		int i = 0;
 
 		// Jos lista on tyhjä, lisää usernamen heti. Jos ei, tarkistaa onko username
-		// listassa ja lisää vain jos on. Tarkistaa varmuuden vuoksi myös, onko username
-		// tyhjä bugien varalta
-
+		// listassa ja lisää vain jos ei ole (eli käyttäjä voi tykätä vain kerran)
+		int i = 0;
 		if (List1.size() == 0) {
 			List1.add(username);
 		} else {

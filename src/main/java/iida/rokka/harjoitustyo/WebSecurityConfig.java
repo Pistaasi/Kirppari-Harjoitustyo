@@ -22,7 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/css/**").permitAll().and().authorizeRequests()
-				.antMatchers("/signup", "/itemlist/**", "/", "/console/**", "/saveuser").permitAll().and()
+				.antMatchers("/signup", "/itemlist/**", "/", "/console/**", "/saveuser", "/items/**").permitAll().and()
 				.authorizeRequests().anyRequest().authenticated().and().formLogin().defaultSuccessUrl("/itemlist", true)
 				.permitAll().and().logout().permitAll();
 		http.csrf().disable(); // h2 consolea varten

@@ -59,7 +59,7 @@ public class Item implements Comparable<Item> {
 		this.likers = likers;
 	}
 
-	// Ilman kategoriaa
+	// Ilman kategoriaa (Testidatan kansaa ongelmia)
 	public Item(String name, String seller, String location, String description, String email, Double price,
 			LocalDate date, String user) {
 		super();

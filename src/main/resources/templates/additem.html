@@ -3,11 +3,21 @@
 <head>
     <title>Lisäys</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    
+<style>
+  h1 {margin:auto; text-align:center;}
+  #catlist {width:250px; margin:auto; text-align:center;}
+  #form {margin:auto; text-align:center;}
+  #description {width: 230px;}
+</style>
+
 </head>
+<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
 <body>
-	<h1>Lisää kirpparikamoja!</h1>
+	<h1>Jätä ilmoitus!</h1>
+	<br></br>
 	<div>
-		<form th:object="${item}" th:action="@{save}" action="#" method="post">
+		<form id="form" class="form-group" th:object="${item}" th:action="@{save}" action="#" method="post">
 		
 		  	<label for="name">Tuote</label>
 			<input type="text" id="name" th:field="*{name}" />
@@ -22,7 +32,7 @@
 			<div style="clear: both; display: block; height: 10px;"></div>
 			
 			<label for="description">Kuvaus</label>
-			<input type="text" id="description" th:field="*{description}" />
+			<textarea type="text" id="description" th:field="*{description}"></textarea>
 			<div style="clear: both; display: block; height: 10px;"></div>
 			
 			<label for="email">Email</label>
@@ -34,12 +44,12 @@
 			<div style="clear: both; display: block; height: 10px;"></div>
 			
 			<div style="clear: both; display: block; height: 10px;"></div>						
-		  	<label for="catlist">Category</label>
+		  	<label for="catlist">Kategoria</label>
 			 <select id="catlist" th:field="*{category}" class="form-control">
        		<option th:each="category: ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
     		</select>
 			
-			<input type="submit" value="Save"></input>
+			<input class="btn btn-primary" type="submit" value="Tallenna"></input>
 		</form>
 	</div>
 </body>
