@@ -3,7 +3,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>Hello</title>
+<title>Kirppari</title>
 </head>
 <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
 <body>
@@ -23,7 +23,7 @@
 	<h2>Järjestä ilmoitukset: </h2>
 	<td><a th:href="@{/itemlist/alpha}" class="btn btn-success">aakkoset</a></td>
 	<td><a th:href="@{/itemlist/price}" class="btn btn-success">hinta</a></td>
-	<td><a th:href="@{/itemlist/price}" class="btn btn-success">päivämäärä</a></td>
+	<td><a th:href="@{/itemlist/date}" class="btn btn-success">päivämäärä</a></td>
 	
 <table class="table table-striped">
 <thead class="thead-dark">
@@ -37,6 +37,7 @@
 <th>Kategoria</th>
 <th>Päivämäärä</th>
 <th>userTEST</th>
+<th>Tykkäykset</th>
 <th sec:authorize="hasAuthority('ADMIN')"> </th>
 </tr>
 <thead/>
@@ -53,8 +54,7 @@
 <td th:text="${item.date}"></td>
 <td th:text="${item.user}"></td>
 
-
-<td><a th:href="@{/like/{id}(id=${item.id})}" sec:authorize="hasAnyAuthority('ADMIN', 'USER')" class="btn btn-primary">Tykkää</a></td>
+<td><a th:href="@{/like/{id}(id=${item.id})}" class="btn btn-primary" th:text="${#lists.size(item.likers)}"></a></td>
 
 <div th:switch="${currUser}"> 
 <td th:case="${item.user}" sec:authorize="hasAnyAuthority('ADMIN', 'USER')"><a th:href="@{/delete/{id}(id=${item.id})}" class="btn btn-danger">Poista</a></td>

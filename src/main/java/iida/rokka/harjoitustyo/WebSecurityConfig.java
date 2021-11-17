@@ -25,7 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/signup", "/itemlist/**", "/", "/console/**", "/saveuser").permitAll().and()
 				.authorizeRequests().anyRequest().authenticated().and().formLogin().defaultSuccessUrl("/itemlist", true)
 				.permitAll().and().logout().permitAll();
-		http.csrf().disable();
+		http.csrf().disable(); // h2 consolea varten
 		http.headers().frameOptions().disable();
 	}
 

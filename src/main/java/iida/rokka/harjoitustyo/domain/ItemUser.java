@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class ItemLikes {
+public class ItemUser {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,9 +17,12 @@ public class ItemLikes {
 	// KONSTRUKTORIT
 	// String koska otan vain usernamen
 
-	public ItemLikes(Long itemID, String user) {
+	public ItemUser() {
+
+	}
+
+	public ItemUser(String user) {
 		super();
-		ItemID = itemID;
 		this.user = user;
 	}
 
@@ -53,7 +56,7 @@ public class ItemLikes {
 
 	@Override
 	public String toString() {
-		return "ItemLikes [Likeid=" + Likeid + ", ItemID=" + ItemID + ", user=" + user + "]";
+		return "ItemUser [Likeid=" + Likeid + ", ItemID=" + ItemID + ", user=" + user + "]";
 	}
 
 }

@@ -1,6 +1,7 @@
 package iida.rokka.harjoitustyo.domain;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,6 +21,7 @@ public class Item implements Comparable<Item> {
 	private Double price;
 	private LocalDate date;
 	private String user;
+	private ArrayList<String> likers = new ArrayList<String>();
 
 	@ManyToOne
 	@JoinColumn(name = "categoryid")
@@ -40,6 +42,21 @@ public class Item implements Comparable<Item> {
 		this.price = price;
 		this.date = date;
 		this.category = category;
+	}
+
+	// Likers Arraylista
+	public Item(String name, String seller, String location, String description, String email, Double price,
+			LocalDate date, Category category, String user, ArrayList<String> likers) {
+		super();
+		this.name = name;
+		this.seller = seller;
+		this.location = location;
+		this.description = description;
+		this.email = email;
+		this.price = price;
+		this.date = date;
+		this.category = category;
+		this.likers = likers;
 	}
 
 	// Ilman kategoriaa
@@ -64,6 +81,14 @@ public class Item implements Comparable<Item> {
 
 	public Long getId() {
 		return Itemid;
+	}
+
+	public ArrayList<String> getLikers() {
+		return likers;
+	}
+
+	public void setLikers(ArrayList<String> likers) {
+		this.likers = likers;
 	}
 
 	public String getUser() {

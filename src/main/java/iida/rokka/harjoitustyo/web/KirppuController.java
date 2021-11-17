@@ -1,6 +1,7 @@
 package iida.rokka.harjoitustyo.web;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -21,7 +22,6 @@ import org.springframework.web.context.request.WebRequest;
 import iida.rokka.harjoitustyo.domain.CategoryRepository;
 import iida.rokka.harjoitustyo.domain.Item;
 import iida.rokka.harjoitustyo.domain.ItemRepository;
-import iida.rokka.harjoitustyo.domain.LikesRepository;
 import iida.rokka.harjoitustyo.domain.User;
 
 @Controller
@@ -32,9 +32,6 @@ public class KirppuController {
 
 	@Autowired
 	private CategoryRepository catrepository;
-
-	@Autowired
-	private LikesRepository lrepository;
 
 	// aloitussivu, vie itemlist sivulle
 	@GetMapping("/")
@@ -88,16 +85,32 @@ public class KirppuController {
 		}
 
 		// List<ItemLikes> like1 = lrepository.findAll();
+		List<Item> item1 = repository.findByName("Sohva");
+		Item Item2 = item1.get(0);
+		System.out.print(Item2.getLikers());
 
 		model.addAttribute("currUser", username);
 		return "itemlist";
 	}
 
 	// Itemlist sivu, jossa Kirppistuotteiden listaus, tykkäys, lisääminen,
-	// poistaminen ja
-	// editointi
+	// poistaminen ja editointi
 	@GetMapping("/itemlist/{sort}")
 	public String ItemListSort(@PathVariable("sort") String sort, Model model) {
+
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		String username = "admin";
+		if (principal instanceof UserDetails) {
+			username = ((UserDetails) principal).getUsername();
+		} else {
+			username = principal.toString();
+		}
+
+		// List<ItemLikes> like1 = lrepository.findAll();
+
+		model.addAttribute("currUser", username);
+
 		model.addAttribute("items", Sorting(sort));
 		return "itemlist";
 	}
@@ -128,9 +141,13 @@ public class KirppuController {
 		return repository.findById(ItemId);
 	}
 
-	// Tykkäystoiminto KESKEN !!!!!!!!!!!!!!!!!!!!!!!!
-	@PostMapping("/like{id}")
-	public String like(@PathVariable("id") Long ItemID) {
+	// Tykkäystoiminto
+	@GetMapping("/like/{id}")
+	public String like(@PathVariable("id") Long ItemId) {
+
+		Optional<Item> OptionalItem = repository.findById(ItemId);
+		Item Item = OptionalItem.get();
+		System.out.print(Item);
 
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -140,6 +157,34 @@ public class KirppuController {
 		} else {
 			username = principal.toString();
 		}
+
+		ArrayList<String> List1 = Item.getLikers();
+		int i = 0;
+
+		// Jos lista on tyhjä, lisää usernamen heti. Jos ei, tarkistaa onko username
+		// listassa ja lisää vain jos on. Tarkistaa varmuuden vuoksi myös, onko username
+		// tyhjä bugien varalta
+
+		if (List1.size() == 0) {
+			List1.add(username);
+		} else {
+
+			while (List1.size() > i) {
+				if (List1.get(i).equals(username)) {
+					break;
+				} else {
+					i++;
+				}
+				if (List1.size() == i) {
+					List1.add(username);
+				}
+			}
+
+		}
+
+		Item.setLikers(List1);
+
+		repository.save(Item);
 
 		return "redirect:../itemlist";
 	}
