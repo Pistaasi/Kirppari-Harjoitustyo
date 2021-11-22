@@ -23,6 +23,7 @@ import iida.rokka.harjoitustyo.domain.CategoryRepository;
 import iida.rokka.harjoitustyo.domain.Item;
 import iida.rokka.harjoitustyo.domain.ItemRepository;
 import iida.rokka.harjoitustyo.domain.User;
+import iida.rokka.harjoitustyo.domain.UserRepository;
 
 @Controller
 public class KirppuController {
@@ -32,6 +33,9 @@ public class KirppuController {
 
 	@Autowired
 	private CategoryRepository catrepository;
+
+	@Autowired
+	private UserRepository urepository;
 
 	// aloitussivu, vie itemlist sivulle
 	@GetMapping("/")
